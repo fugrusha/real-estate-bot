@@ -7,7 +7,7 @@ public class HelpCommand implements Command {
 
     private SendMessageService sendMessageService;
 
-    private static final String MESSAGE = "Don't worry, I will help you!";
+    public static final String MESSAGE = "Don't worry, I will help you!";
 
     public HelpCommand(SendMessageService sendMessageService) {
         this.sendMessageService = sendMessageService;

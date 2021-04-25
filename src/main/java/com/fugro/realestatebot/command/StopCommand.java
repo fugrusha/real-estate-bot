@@ -7,7 +7,7 @@ public class StopCommand implements Command {
 
     private SendMessageService sendMessageService;
 
-    private static final String STOP_MESSAGE = "Okay. I will delete all your data and subscriptions";
+    public static final String STOP_MESSAGE = "Okay. I will delete all your data and subscriptions";
 
     public StopCommand(SendMessageService sendMessageService) {
         this.sendMessageService = sendMessageService;
