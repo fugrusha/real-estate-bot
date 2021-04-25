@@ -2,6 +2,7 @@ package com.fugro.realestatebot.command;
 
 import com.fugro.realestatebot.bot.RealEstateBot;
 import com.fugro.realestatebot.service.SendMessageService;
+import com.fugro.realestatebot.service.TelegramUserService;
 import com.fugro.realestatebot.service.impl.SendMessageServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -13,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public abstract class AbstractCommandTest {
 
     protected RealEstateBot realEstateBot = Mockito.mock(RealEstateBot.class);
+    protected TelegramUserService userService = Mockito.mock(TelegramUserService.class);
     protected SendMessageService sendMessageService = new SendMessageServiceImpl(realEstateBot);
 
     abstract String getCommandName();
