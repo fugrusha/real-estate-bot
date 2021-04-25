@@ -1,7 +1,11 @@
 package com.fugro.realestatebot.bot;
 
 import com.fugro.realestatebot.command.CommandContainer;
+import com.fugro.realestatebot.domain.TelegramUser;
+import com.fugro.realestatebot.service.TelegramUserService;
 import com.fugro.realestatebot.service.impl.SendMessageServiceImpl;
+import com.fugro.realestatebot.service.impl.TelegramUserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -22,8 +26,9 @@ public class RealEstateBot extends TelegramLongPollingBot {
 
     private final CommandContainer commandContainer;
 
-    public RealEstateBot() {
-        this.commandContainer = new CommandContainer(new SendMessageServiceImpl(this));
+    @Autowired
+    public RealEstateBot(TelegramUserService userService) {
+        this.commandContainer = new CommandContainer(new SendMessageServiceImpl(this), userService);
     }
 
     @Override
