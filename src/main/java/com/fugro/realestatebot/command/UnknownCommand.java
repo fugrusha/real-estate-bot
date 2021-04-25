@@ -7,7 +7,7 @@ public class UnknownCommand implements Command {
 
     private SendMessageService sendMessageService;
 
-    private static final String MESSAGE = "I don't understand what you want :(";
+    public static final String MESSAGE = "I don't understand what you want :(";
 
     public UnknownCommand(SendMessageService sendMessageService) {
         this.sendMessageService = sendMessageService;
