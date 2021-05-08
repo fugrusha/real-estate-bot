@@ -1,5 +1,6 @@
 package com.fugro.realestatebot.command;
 
+import com.fugro.realestatebot.bot.BotUtils;
 import com.fugro.realestatebot.bot.KeyboardFactory;
 import com.fugro.realestatebot.domain.TelegramUser;
 import com.fugro.realestatebot.service.SendMessageService;
@@ -21,7 +22,7 @@ public class StartCommand implements Command {
 
     @Override
     public void execute(Update update) {
-        String chatId = update.getMessage().getChatId().toString();
+        String chatId = BotUtils.getChatId(update);
 
         TelegramUser user = userService.findByChatId(chatId);
 

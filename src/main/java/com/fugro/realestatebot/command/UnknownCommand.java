@@ -1,11 +1,12 @@
 package com.fugro.realestatebot.command;
 
+import com.fugro.realestatebot.bot.BotUtils;
 import com.fugro.realestatebot.service.SendMessageService;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class UnknownCommand implements Command {
 
-    private SendMessageService sendMessageService;
+    private final SendMessageService sendMessageService;
 
     public static final String MESSAGE = "I don't understand what you want :(";
 
@@ -15,7 +16,7 @@ public class UnknownCommand implements Command {
 
     @Override
     public void execute(Update update) {
-        String chatId = update.getMessage().getChatId().toString();
+        String chatId = BotUtils.getChatId(update);
 
         sendMessageService.sendMessage(chatId, MESSAGE);
     }

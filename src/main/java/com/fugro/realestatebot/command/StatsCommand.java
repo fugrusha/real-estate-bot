@@ -1,5 +1,6 @@
 package com.fugro.realestatebot.command;
 
+import com.fugro.realestatebot.bot.BotUtils;
 import com.fugro.realestatebot.service.SendMessageService;
 import com.fugro.realestatebot.service.TelegramUserService;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -19,7 +20,7 @@ public class StatsCommand implements Command{
     @Override
     public void execute(Update update) {
         int activeUserCount = userService.getAllActiveUsers().size();
-        String chatId = update.getMessage().getChatId().toString();
+        String chatId = BotUtils.getChatId(update);
 
         sendMessageService.sendMessage(chatId, String.format(STAT_MESSAGE, activeUserCount));
 
