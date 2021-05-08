@@ -1,14 +1,16 @@
 package com.fugro.realestatebot.bot;
 
+import com.fugro.realestatebot.callback.CallbackFacade;
+import com.fugro.realestatebot.client.EasyBaseClient;
 import com.fugro.realestatebot.command.CommandContainer;
-import com.fugro.realestatebot.domain.TelegramUser;
+import com.fugro.realestatebot.service.DistrictSubService;
 import com.fugro.realestatebot.service.TelegramUserService;
 import com.fugro.realestatebot.service.impl.SendMessageServiceImpl;
-import com.fugro.realestatebot.service.impl.TelegramUserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import static com.fugro.realestatebot.command.CommandName.NO;
@@ -26,13 +28,36 @@ public class RealEstateBot extends TelegramLongPollingBot {
 
     private final CommandContainer commandContainer;
 
+    private final CallbackFacade callbackFacade;
+
     @Autowired
-    public RealEstateBot(TelegramUserService userService) {
-        this.commandContainer = new CommandContainer(new SendMessageServiceImpl(this), userService);
+    public RealEstateBot(TelegramUserService userService,
+                         EasyBaseClient easyBaseClient,
+                         DistrictSubService districtSubService
+    ) {
+        this.commandContainer = new CommandContainer(
+                new SendMessageServiceImpl(this),
+                userService,
+                easyBaseClient,
+                districtSubService
+        );
+
+        this.callbackFacade = new CallbackFacade(
+                new SendMessageServiceImpl(this),
+                userService,
+                easyBaseClient,
+                districtSubService
+        );
     }
 
     @Override
     public void onUpdateReceived(Update update) {
+        if (update.hasCallbackQuery()) {
+            CallbackQuery callbackQuery = update.getCallbackQuery();
+            callbackFacade.processCallback(callbackQuery);
+            return;
+        }
+
         if (update.hasMessage() && update.getMessage().hasText()) {
             String message = update.getMessage().getText().trim();
             if (message.startsWith(COMMAND_PREFIX)) {

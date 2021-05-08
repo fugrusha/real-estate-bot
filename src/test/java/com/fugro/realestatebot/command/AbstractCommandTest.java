@@ -1,6 +1,7 @@
 package com.fugro.realestatebot.command;
 
 import com.fugro.realestatebot.bot.RealEstateBot;
+import com.fugro.realestatebot.client.EasyBaseClient;
 import com.fugro.realestatebot.service.SendMessageService;
 import com.fugro.realestatebot.service.TelegramUserService;
 import com.fugro.realestatebot.service.impl.SendMessageServiceImpl;
@@ -14,6 +15,7 @@ public abstract class AbstractCommandTest {
 
     protected RealEstateBot realEstateBot = Mockito.mock(RealEstateBot.class);
     protected TelegramUserService userService = Mockito.mock(TelegramUserService.class);
+    protected EasyBaseClient easyBaseClient = Mockito.mock(EasyBaseClient.class);
     protected SendMessageService sendMessageService = new SendMessageServiceImpl(realEstateBot);
 
     abstract String getCommandName();
@@ -25,19 +27,16 @@ public abstract class AbstractCommandTest {
     @Test
     public void shouldProperlyExecuteCommand() throws Exception {
         // given
-        Long chaId = 1234L;
+        Long chatId = 1234L;
 
         Message message = Mockito.mock(Message.class);
-        Mockito.when(message.getChatId()).thenReturn(chaId);
+        Mockito.when(message.getChatId()).thenReturn(chatId);
         Mockito.when(message.getText()).thenReturn(getCommandName());
 
         Update update = new Update();
         update.setMessage(message);
 
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(chaId.toString());
-        sendMessage.setText(getCommandMessage());
-        sendMessage.enableHtml(true);
+        SendMessage sendMessage = createSendMessage(chatId);
 
         // when
         getCommand().execute(update);
@@ -45,5 +44,13 @@ public abstract class AbstractCommandTest {
         // then
         Mockito.verify(realEstateBot).execute(sendMessage);
 
+    }
+
+    protected SendMessage createSendMessage(Long chaId) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chaId.toString());
+        sendMessage.setText(getCommandMessage());
+        sendMessage.enableHtml(true);
+        return sendMessage;
     }
 }

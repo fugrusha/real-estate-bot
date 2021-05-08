@@ -5,6 +5,7 @@ import com.fugro.realestatebot.service.SendMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Service
@@ -23,6 +24,22 @@ public class SendMessageServiceImpl implements SendMessageService {
         sendMessage.setChatId(chatId);
         sendMessage.enableHtml(true);
         sendMessage.setText(messageText);
+
+        try {
+            realEstateBot.execute(sendMessage);
+        } catch (TelegramApiException e) {
+            //todo add logging to the project.
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void sendMessage(String chatId, String messageText, ReplyKeyboard replyKeyboard) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
+        sendMessage.enableHtml(true);
+        sendMessage.setText(messageText);
+        sendMessage.setReplyMarkup(replyKeyboard);
 
         try {
             realEstateBot.execute(sendMessage);

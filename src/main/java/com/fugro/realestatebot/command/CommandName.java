@@ -6,6 +6,8 @@ public enum CommandName {
     STOP("/stop"),
     HELP("/help"),
     STATS("/stats"),
+    MY_SUBS("/mysubs"),
+    DISTRICT_LIST("/districtlist"),
     NO("no_command");
 
     private final String commandName;

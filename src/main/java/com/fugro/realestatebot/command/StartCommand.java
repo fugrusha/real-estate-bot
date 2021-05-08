@@ -1,9 +1,11 @@
 package com.fugro.realestatebot.command;
 
+import com.fugro.realestatebot.bot.KeyboardFactory;
 import com.fugro.realestatebot.domain.TelegramUser;
 import com.fugro.realestatebot.service.SendMessageService;
 import com.fugro.realestatebot.service.TelegramUserService;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
 public class StartCommand implements Command {
 
@@ -31,6 +33,8 @@ public class StartCommand implements Command {
         user.setActive(true);
         userService.save(user);
 
-        sendMessageService.sendMessage(chatId, START_MESSAGE);
+        ReplyKeyboardMarkup menuKeyboard = KeyboardFactory.getMainMenuKeyboard();
+
+        sendMessageService.sendMessage(chatId, START_MESSAGE, menuKeyboard);
     }
 }

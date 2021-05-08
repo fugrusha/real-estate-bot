@@ -1,5 +1,7 @@
 package com.fugro.realestatebot.command;
 
+import com.fugro.realestatebot.client.EasyBaseClient;
+import com.fugro.realestatebot.service.DistrictSubService;
 import com.fugro.realestatebot.service.SendMessageService;
 import com.fugro.realestatebot.service.TelegramUserService;
 import org.junit.jupiter.api.Assertions;
@@ -17,7 +19,9 @@ public class CommandContainerTest {
     public void init() {
         SendMessageService sendMessageService = Mockito.mock(SendMessageService.class);
         TelegramUserService userService = Mockito.mock(TelegramUserService.class);
-        commandContainer = new CommandContainer(sendMessageService, userService);
+        EasyBaseClient easyBaseClient = Mockito.mock(EasyBaseClient.class);
+        DistrictSubService districtSubService = Mockito.mock(DistrictSubService.class);
+        commandContainer = new CommandContainer(sendMessageService, userService, easyBaseClient, districtSubService);
     }
 
     @Test
