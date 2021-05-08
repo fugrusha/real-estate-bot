@@ -1,6 +1,6 @@
 package com.fugro.realestatebot.callback;
 
-import com.fugro.realestatebot.command.BotUtils;
+import com.fugro.realestatebot.bot.BotUtils;
 import com.fugro.realestatebot.domain.DistrictSub;
 import com.fugro.realestatebot.service.DistrictSubService;
 import com.fugro.realestatebot.service.SendMessageService;

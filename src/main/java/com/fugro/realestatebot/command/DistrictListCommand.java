@@ -1,5 +1,6 @@
 package com.fugro.realestatebot.command;
 
+import com.fugro.realestatebot.bot.BotUtils;
 import com.fugro.realestatebot.bot.KeyboardFactory;
 import com.fugro.realestatebot.client.EasyBaseClient;
 import com.fugro.realestatebot.client.dto.DistrictDTO;

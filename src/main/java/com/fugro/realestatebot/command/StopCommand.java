@@ -1,5 +1,6 @@
 package com.fugro.realestatebot.command;
 
+import com.fugro.realestatebot.bot.BotUtils;
 import com.fugro.realestatebot.domain.TelegramUser;
 import com.fugro.realestatebot.service.SendMessageService;
 import com.fugro.realestatebot.service.TelegramUserService;
@@ -19,7 +20,7 @@ public class StopCommand implements Command {
 
     @Override
     public void execute(Update update) {
-        String chatId = update.getMessage().getChatId().toString();
+        String chatId = BotUtils.getChatId(update);
 
         TelegramUser user = userService.findByChatId(chatId);
         if (user != null) {
