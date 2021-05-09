@@ -27,6 +27,30 @@ public class EasyBaseClientImpl implements EasyBaseClient {
                               @Value("${easy.base.reference.api.url}") String referenceUrl) {
         this.API_URL = apiURL;
         this.REFERENCE_API_URL = referenceUrl;
+
+        configureClient();
+    }
+
+    private void configureClient() {
+        Unirest.config().setObjectMapper(new kong.unirest.ObjectMapper() {
+            @Override
+            public <T> T readValue(String value, Class<T> valueType) {
+                try {
+                    return objectMapper.readValue(value, valueType);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public String writeValue(Object value) {
+                try {
+                    return objectMapper.writeValueAsString(value);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     @PostConstruct
