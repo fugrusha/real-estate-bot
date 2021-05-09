@@ -11,7 +11,7 @@ import java.util.List;
 public class AdvertImportDTO {
 
     @JsonProperty("id")
-    private String externalId;
+    private Integer externalId;
 
     @JsonProperty("business_type")
     private String businessType;

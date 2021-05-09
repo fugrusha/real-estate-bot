@@ -36,6 +36,22 @@ public class DistrictSubServiceImpl implements DistrictSubService {
     }
 
     @Override
+    public List<DistrictSub> getAllSubs() {
+        return districtSubRepository.findAll();
+    }
+
+    @Override
+    public DistrictSub updateSentIdsSet(String chatId, Integer districtId, Integer newExternalId) {
+        Optional<DistrictSub> subOptional = districtSubRepository.findByChatIdAndDistrictId(chatId, districtId);
+        if (subOptional.isPresent()) {
+            DistrictSub sub = subOptional.get();
+            sub.getSentAdIds().add(newExternalId);
+            return districtSubRepository.save(sub);
+        }
+        throw new RuntimeException("DistrictSub not found for chatId=" + chatId + " and districtId=" + districtId);
+    }
+
+    @Override
     public Optional<DistrictSub> getSub(String chatId, Integer districtId) {
         return districtSubRepository.findByChatIdAndDistrictId(chatId, districtId);
     }

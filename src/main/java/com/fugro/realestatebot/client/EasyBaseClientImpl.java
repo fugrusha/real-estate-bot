@@ -1,7 +1,10 @@
 package com.fugro.realestatebot.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fugro.realestatebot.client.dto.*;
 import kong.unirest.Unirest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,10 +19,37 @@ public class EasyBaseClientImpl implements EasyBaseClient {
 
     private final String REFERENCE_API_URL;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     public EasyBaseClientImpl(@Value("${easy.base.api.url}") String apiURL,
                               @Value("${easy.base.reference.api.url}") String referenceUrl) {
         this.API_URL = apiURL;
         this.REFERENCE_API_URL = referenceUrl;
+
+        configureClient();
+    }
+
+    private void configureClient() {
+        Unirest.config().setObjectMapper(new kong.unirest.ObjectMapper() {
+            @Override
+            public <T> T readValue(String value, Class<T> valueType) {
+                try {
+                    return objectMapper.readValue(value, valueType);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public String writeValue(Object value) {
+                try {
+                    return objectMapper.writeValueAsString(value);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
 
     @Override

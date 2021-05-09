@@ -9,6 +9,10 @@ public interface DistrictSubService {
 
     List<DistrictSub> getUserSubs(String chatId);
 
+    List<DistrictSub> getAllSubs();
+
+    DistrictSub updateSentIdsSet(String chatId, Integer districtId, Integer newId);
+
     Optional<DistrictSub> getSub(String chatId, Integer districtId);
 
     DistrictSub createSub(String chatId, Integer districtId);
