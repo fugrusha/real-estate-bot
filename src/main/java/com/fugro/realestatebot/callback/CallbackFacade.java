@@ -18,7 +18,7 @@ public class CallbackFacade {
     public CallbackFacade(SendMessageService sendMessageService, TelegramUserService userService,
                           EasyBaseClient easyBaseClient, DistrictSubService districtSubService) {
         HANDLERS_MAP = ImmutableMap.<CallbackType, CallbackHandler>builder()
-                .put(SUB_TO_DISTRICT, new SubToDistrictCallbackHandler(sendMessageService, districtSubService))
+                .put(SUB_TO_DISTRICT, new SubToDistrictCallbackHandler(sendMessageService, districtSubService, easyBaseClient))
                 .put(DELETE_DISTRICT_SUB, new DeleteDistrictSubCallbackHandler(sendMessageService, districtSubService))
                 .build();
     }

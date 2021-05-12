@@ -54,13 +54,7 @@ public class BotFacade {
 
         if (update.hasMessage() && update.getMessage().hasText()) {
             String message = update.getMessage().getText().trim();
-            if (message.startsWith(COMMAND_PREFIX)) {
-                String commandIdentifier = message.split(" ")[0].toLowerCase();
-
-                return commandContainer.retrieveCommand(commandIdentifier).execute(update);
-            } else {
-                return commandContainer.retrieveCommand(NO.getCommandName()).execute(update);
-            }
+            return commandContainer.retrieveCommand(message).execute(update);
         }
 
         return null;

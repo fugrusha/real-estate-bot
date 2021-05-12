@@ -14,19 +14,19 @@ public class DistrictListCommandTest extends AbstractCommandTest {
 
     @Override
     String getCommandMessage() {
-        return DistrictListCommand.MESSAGE;
+        return DistrictListCommand.DISTRICT_LIST_MESSAGE;
     }
 
     @Override
     Command getCommand() {
-        return new DistrictListCommand(sendMessageService, easyBaseClient);
+        return new DistrictListCommand(sendMessageService, easyBaseClient, districtSubService);
     }
 
     @Override
     protected SendMessage createSendMessage(Long chaId) {
         SendMessage sendMessage = super.createSendMessage(chaId);
 
-        sendMessage.setReplyMarkup(KeyboardFactory.getDistrictListKeyboard(new ArrayList<>()));
+        sendMessage.setReplyMarkup(KeyboardFactory.getDistrictListKeyboard(new ArrayList<>(), new ArrayList<>()));
 
         return sendMessage;
     }

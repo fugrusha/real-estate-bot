@@ -19,4 +19,6 @@ public interface DistrictSubService {
 
     boolean deleteSub(String chatId, Integer districtId);
 
+    void deleteAllSubs(String chatId);
+
 }
