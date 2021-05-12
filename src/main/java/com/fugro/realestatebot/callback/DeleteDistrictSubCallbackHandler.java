@@ -3,6 +3,7 @@ package com.fugro.realestatebot.callback;
 import com.fugro.realestatebot.bot.BotUtils;
 import com.fugro.realestatebot.service.DistrictSubService;
 import com.fugro.realestatebot.service.SendMessageService;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 public class DeleteDistrictSubCallbackHandler implements CallbackHandler {
@@ -16,6 +17,7 @@ public class DeleteDistrictSubCallbackHandler implements CallbackHandler {
     }
 
     public static final String SUCCESS_DELETION_MESSAGE = "Subscription removed";
+    public static final String ERROR_DELETION_MESSAGE = "Ooops! Subscription was not removed";
 
     @Override
     public CallbackType getCallbackType() {
@@ -23,7 +25,7 @@ public class DeleteDistrictSubCallbackHandler implements CallbackHandler {
     }
 
     @Override
-    public void handleCallback(CallbackQuery callbackQuery) {
+    public BotApiMethod<?> handleCallback(CallbackQuery callbackQuery) {
         String chatId = BotUtils.getChatId(callbackQuery);
 
         Integer districtId = Integer.parseInt(callbackQuery.getData().split("=")[1]);
@@ -31,9 +33,10 @@ public class DeleteDistrictSubCallbackHandler implements CallbackHandler {
         boolean isRemoved = districtSubService.deleteSub(chatId, districtId);
 
         if (isRemoved) {
-            sendMessageService.sendMessage(chatId, SUCCESS_DELETION_MESSAGE);
+             return sendMessageService.getMessage(chatId, SUCCESS_DELETION_MESSAGE);
         }
 
+        return sendMessageService.getMessage(chatId, ERROR_DELETION_MESSAGE);
     }
 
     // todo update keyboard without deleted sub

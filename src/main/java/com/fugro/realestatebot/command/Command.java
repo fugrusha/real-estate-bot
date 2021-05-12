@@ -1,8 +1,9 @@
 package com.fugro.realestatebot.command;
 
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface Command {
 
-    void execute(Update update);
+    BotApiMethod<?> execute(Update update);
 }

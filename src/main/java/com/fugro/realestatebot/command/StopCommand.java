@@ -4,6 +4,7 @@ import com.fugro.realestatebot.bot.BotUtils;
 import com.fugro.realestatebot.domain.TelegramUser;
 import com.fugro.realestatebot.service.SendMessageService;
 import com.fugro.realestatebot.service.TelegramUserService;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class StopCommand implements Command {
@@ -19,7 +20,7 @@ public class StopCommand implements Command {
     }
 
     @Override
-    public void execute(Update update) {
+    public BotApiMethod<?> execute(Update update) {
         String chatId = BotUtils.getChatId(update);
 
         TelegramUser user = userService.findByChatId(chatId);
@@ -28,6 +29,6 @@ public class StopCommand implements Command {
             userService.save(user);
         }
 
-        sendMessageService.sendMessage(chatId, STOP_MESSAGE);
+        return sendMessageService.getMessage(chatId, STOP_MESSAGE);
     }
 }

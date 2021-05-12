@@ -5,6 +5,7 @@ import com.fugro.realestatebot.bot.KeyboardFactory;
 import com.fugro.realestatebot.domain.DistrictSub;
 import com.fugro.realestatebot.service.DistrictSubService;
 import com.fugro.realestatebot.service.SendMessageService;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
@@ -24,16 +25,16 @@ public class MySubsCommand implements Command {
     public static final String MY_SUBS_MESSAGE = "Your active subscriptions below";
 
     @Override
-    public void execute(Update update) {
+    public BotApiMethod<?> execute(Update update) {
         String chatId = BotUtils.getChatId(update);
 
         List<DistrictSub> subs = districtSubService.getUserSubs(chatId);
 
         if (subs.isEmpty()) {
-            sendMessageService.sendMessage(chatId, NO_SUBS_MESSAGE);
+            return sendMessageService.getMessage(chatId, NO_SUBS_MESSAGE);
         } else {
             ReplyKeyboard keyboard = KeyboardFactory.getActiveSubsKeyboard(subs);
-            sendMessageService.sendMessage(chatId, MY_SUBS_MESSAGE, keyboard);
+            return sendMessageService.getMessage(chatId, MY_SUBS_MESSAGE, keyboard);
         }
     }
 }

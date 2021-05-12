@@ -5,6 +5,7 @@ import com.fugro.realestatebot.service.DistrictSubService;
 import com.fugro.realestatebot.service.SendMessageService;
 import com.fugro.realestatebot.service.TelegramUserService;
 import com.google.common.collect.ImmutableMap;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import static com.fugro.realestatebot.callback.CallbackType.DELETE_DISTRICT_SUB;
@@ -22,12 +23,12 @@ public class CallbackFacade {
                 .build();
     }
 
-    public void processCallback(CallbackQuery callbackQuery) {
+    public BotApiMethod<?> processCallback(CallbackQuery callbackQuery) {
         CallbackType usersQueryType = CallbackType.valueOf(callbackQuery.getData().split("=")[0]);
 
         CallbackHandler currentHandler = findCallbackHandler(usersQueryType);
 
-        currentHandler.handleCallback(callbackQuery);
+        return currentHandler.handleCallback(callbackQuery);
     }
 
     private CallbackHandler findCallbackHandler(CallbackType callbackType) {

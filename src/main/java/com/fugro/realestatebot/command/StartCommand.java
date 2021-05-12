@@ -5,6 +5,7 @@ import com.fugro.realestatebot.bot.KeyboardFactory;
 import com.fugro.realestatebot.domain.TelegramUser;
 import com.fugro.realestatebot.service.SendMessageService;
 import com.fugro.realestatebot.service.TelegramUserService;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
@@ -21,7 +22,7 @@ public class StartCommand implements Command {
     }
 
     @Override
-    public void execute(Update update) {
+    public BotApiMethod<?> execute(Update update) {
         String chatId = BotUtils.getChatId(update);
 
         TelegramUser user = userService.findByChatId(chatId);
@@ -36,6 +37,6 @@ public class StartCommand implements Command {
 
         ReplyKeyboardMarkup menuKeyboard = KeyboardFactory.getMainMenuKeyboard();
 
-        sendMessageService.sendMessage(chatId, START_MESSAGE, menuKeyboard);
+        return sendMessageService.getMessage(chatId, START_MESSAGE, menuKeyboard);
     }
 }

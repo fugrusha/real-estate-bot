@@ -5,6 +5,7 @@ import com.fugro.realestatebot.bot.KeyboardFactory;
 import com.fugro.realestatebot.client.EasyBaseClient;
 import com.fugro.realestatebot.client.dto.DistrictDTO;
 import com.fugro.realestatebot.service.SendMessageService;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
@@ -23,13 +24,13 @@ public class DistrictListCommand implements Command {
     }
 
     @Override
-    public void execute(Update update) {
+    public BotApiMethod<?> execute(Update update) {
         String chatId = BotUtils.getChatId(update);
 
         List<DistrictDTO> districts = easyBaseClient.getAllDistricts();
 
         ReplyKeyboard keyboard = KeyboardFactory.getDistrictListKeyboard(districts);
 
-        sendMessageService.sendMessage(chatId, MESSAGE, keyboard);
+        return sendMessageService.getMessage(chatId, MESSAGE, keyboard);
     }
 }

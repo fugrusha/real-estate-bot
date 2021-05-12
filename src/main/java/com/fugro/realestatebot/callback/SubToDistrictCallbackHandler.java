@@ -4,6 +4,7 @@ import com.fugro.realestatebot.bot.BotUtils;
 import com.fugro.realestatebot.domain.DistrictSub;
 import com.fugro.realestatebot.service.DistrictSubService;
 import com.fugro.realestatebot.service.SendMessageService;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.Optional;
@@ -27,17 +28,17 @@ public class SubToDistrictCallbackHandler implements CallbackHandler {
     }
 
     @Override
-    public void handleCallback(CallbackQuery callbackQuery) {
+    public BotApiMethod<?> handleCallback(CallbackQuery callbackQuery) {
         String chatId = BotUtils.getChatId(callbackQuery);
 
         Integer districtId = Integer.parseInt(callbackQuery.getData().split("=")[1]);
 
         Optional<DistrictSub> sub = districtSubService.getSub(chatId, districtId);
         if (sub.isPresent()) {
-            sendMessageService.sendMessage(chatId, String.format(DUPLICATE_SUB_MESSAGE, sub.get().getDistrictName()));
+            return sendMessageService.getMessage(chatId, String.format(DUPLICATE_SUB_MESSAGE, sub.get().getDistrictName()));
         } else {
             DistrictSub newSub = districtSubService.createSub(chatId, districtId);
-            sendMessageService.sendMessage(chatId, String.format(SUCCESS_SUB_MESSAGE, newSub.getDistrictName()));
+            return sendMessageService.getMessage(chatId, String.format(SUCCESS_SUB_MESSAGE, newSub.getDistrictName()));
         }
     }
 }

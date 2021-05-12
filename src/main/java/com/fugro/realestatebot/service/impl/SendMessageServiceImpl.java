@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Service
 public class SendMessageServiceImpl implements SendMessageService {
 
-    private RealEstateBot realEstateBot;
+    private final RealEstateBot realEstateBot;
 
     @Autowired
     public SendMessageServiceImpl(RealEstateBot bot) {
@@ -47,5 +47,24 @@ public class SendMessageServiceImpl implements SendMessageService {
             //todo add logging to the project.
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public SendMessage getMessage(String chatId, String messageText) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
+        sendMessage.enableHtml(true);
+        sendMessage.setText(messageText);
+        return sendMessage;
+    }
+
+    @Override
+    public SendMessage getMessage(String chatId, String messageText, ReplyKeyboard replyKeyboard) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.setChatId(chatId);
+        sendMessage.enableHtml(true);
+        sendMessage.setText(messageText);
+        sendMessage.setReplyMarkup(replyKeyboard);
+        return sendMessage;
     }
 }

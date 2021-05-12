@@ -5,9 +5,11 @@ import com.fugro.realestatebot.domain.DistrictSub;
 import com.fugro.realestatebot.service.DistrictSubService;
 import com.fugro.realestatebot.service.SendMessageService;
 import com.fugro.realestatebot.service.impl.SendMessageServiceImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -47,29 +49,31 @@ public class SubToDistrictCallbackHandlerTest {
     }
 
     @Test
-    public void shouldProperlyHandleCallback() throws Exception {
+    public void shouldProperlyHandleCallback() {
         // given
         Mockito.when(districtSubService.createSub(CHAT_ID, DISTRICT_ID)).thenReturn(sub);
         SendMessage expectedReply = createReplySendMessage(getSuccessReplyMessage());
 
         // when
-        callbackHandler.handleCallback(callbackQuery);
+        BotApiMethod<?> actualResult = callbackHandler.handleCallback(callbackQuery);
 
         // then
-        Mockito.verify(realEstateBot).execute(expectedReply);
+        Assertions.assertEquals(expectedReply.getText(), ((SendMessage) actualResult).getText());
+        Assertions.assertEquals(expectedReply.getChatId(), ((SendMessage) actualResult).getChatId());;
     }
 
     @Test
-    public void shouldReturnMessageAboutDuplicateSub() throws Exception {
+    public void shouldReturnMessageAboutDuplicateSub() {
         // given
         Mockito.when(districtSubService.getSub(CHAT_ID, DISTRICT_ID)).thenReturn(Optional.of(sub));
         SendMessage expectedReply = createReplySendMessage(getDuplicateReplyMessage());
 
         // when
-        callbackHandler.handleCallback(callbackQuery);
+        BotApiMethod<?> actualResult = callbackHandler.handleCallback(callbackQuery);
 
         // then
-        Mockito.verify(realEstateBot).execute(expectedReply);
+        Assertions.assertEquals(expectedReply.getText(), ((SendMessage) actualResult).getText());
+        Assertions.assertEquals(expectedReply.getChatId(), ((SendMessage) actualResult).getChatId());
     }
 
     private String getSuccessReplyMessage() {
