@@ -13,4 +13,6 @@ public interface DistrictSubRepository extends MongoRepository<DistrictSub, Stri
     Optional<DistrictSub> findByChatIdAndDistrictId(String chatId, Integer districtId);
 
     List<DistrictSub> findByChatId(String chatId);
+
+    void deleteByChatId(String chatId);
 }

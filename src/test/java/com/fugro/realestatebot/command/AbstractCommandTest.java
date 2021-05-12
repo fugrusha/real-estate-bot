@@ -2,6 +2,7 @@ package com.fugro.realestatebot.command;
 
 import com.fugro.realestatebot.bot.RealEstateBot;
 import com.fugro.realestatebot.client.EasyBaseClient;
+import com.fugro.realestatebot.service.DistrictSubService;
 import com.fugro.realestatebot.service.SendMessageService;
 import com.fugro.realestatebot.service.TelegramUserService;
 import com.fugro.realestatebot.service.impl.SendMessageServiceImpl;
@@ -18,6 +19,7 @@ public abstract class AbstractCommandTest {
     protected RealEstateBot realEstateBot = Mockito.mock(RealEstateBot.class);
     protected TelegramUserService userService = Mockito.mock(TelegramUserService.class);
     protected EasyBaseClient easyBaseClient = Mockito.mock(EasyBaseClient.class);
+    protected DistrictSubService districtSubService = Mockito.mock(DistrictSubService.class);
     protected SendMessageService sendMessageService = new SendMessageServiceImpl(realEstateBot);
 
     abstract String getCommandName();

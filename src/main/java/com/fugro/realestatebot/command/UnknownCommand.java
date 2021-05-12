@@ -9,7 +9,7 @@ public class UnknownCommand implements Command {
 
     private final SendMessageService sendMessageService;
 
-    public static final String MESSAGE = "I don't understand what you want :(";
+    public static final String MESSAGE = "Unknown command";
 
     public UnknownCommand(SendMessageService sendMessageService) {
         this.sendMessageService = sendMessageService;

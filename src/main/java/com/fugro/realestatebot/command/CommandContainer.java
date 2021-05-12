@@ -17,10 +17,10 @@ public class CommandContainer {
                             EasyBaseClient easyBaseClient, DistrictSubService districtSubService) {
         COMMAND_MAP = ImmutableMap.<String, Command>builder()
                 .put(START.getCommandName(), new StartCommand(sendMessageService, userService))
-                .put(STOP.getCommandName(), new StopCommand(sendMessageService, userService))
+                .put(STOP.getCommandName(), new StopCommand(sendMessageService, userService, districtSubService))
                 .put(STATS.getCommandName(), new StatsCommand(sendMessageService, userService))
                 .put(HELP.getCommandName(), new HelpCommand(sendMessageService))
-                .put(DISTRICT_LIST.getCommandName(), new DistrictListCommand(sendMessageService, easyBaseClient))
+                .put(DISTRICT_LIST.getCommandName(), new DistrictListCommand(sendMessageService, easyBaseClient, districtSubService))
                 .put(MY_SUBS.getCommandName(), new MySubsCommand(sendMessageService, districtSubService))
                 .put(NO.getCommandName(), new NoCommand(sendMessageService))
                 .build();

@@ -84,4 +84,9 @@ public class DistrictSubServiceImpl implements DistrictSubService {
         }
         return false;
     }
+
+    @Override
+    public void deleteAllSubs(String chatId) {
+        districtSubRepository.deleteByChatId(chatId);
+    }
 }

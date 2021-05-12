@@ -48,28 +48,7 @@ public class KeyboardFactory {
         return replyKeyboardMarkup;
     }
 
-    public static ReplyKeyboard getDistrictListKeyboard(List<DistrictDTO> districts) {
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-
-        for (DistrictDTO dto : districts) {
-            Integer id = dto.getId();
-            String name = dto.getName();
-
-            List<InlineKeyboardButton> row = new ArrayList<>();
-
-            InlineKeyboardButton button = new InlineKeyboardButton(name);
-            button.setCallbackData(CallbackType.SUB_TO_DISTRICT + DELIMITER + id);
-            row.add(button);
-
-            keyboard.add(row);
-        }
-
-        InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
-        keyboardMarkup.setKeyboard(keyboard);
-        return keyboardMarkup;
-    }
-
-    public static ReplyKeyboard getActiveSubsKeyboard(List<DistrictSub> activeSubs) {
+    public static InlineKeyboardMarkup getActiveSubsKeyboard(List<DistrictSub> activeSubs) {
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
 
         for (DistrictSub sub : activeSubs) {
@@ -85,6 +64,31 @@ public class KeyboardFactory {
             InlineKeyboardButton button2 = new InlineKeyboardButton("DELETE");
             button2.setCallbackData(CallbackType.DELETE_DISTRICT_SUB + DELIMITER + id);
             row.add(button2);
+
+            keyboard.add(row);
+        }
+
+        InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
+        keyboardMarkup.setKeyboard(keyboard);
+        return keyboardMarkup;
+    }
+
+    public static InlineKeyboardMarkup getDistrictListKeyboard(List<DistrictDTO> districts, List<DistrictSub> userSubs) {
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+
+        for (DistrictDTO dto : districts) {
+            Integer id = dto.getId();
+            String name = dto.getName();
+
+            if (userSubs.stream().anyMatch(sub -> sub.getDistrictId().equals(id))) {
+                name = name + " \u2705";
+            }
+
+            List<InlineKeyboardButton> row = new ArrayList<>();
+
+            InlineKeyboardButton button = new InlineKeyboardButton(name);
+            button.setCallbackData(CallbackType.SUB_TO_DISTRICT + DELIMITER + id);
+            row.add(button);
 
             keyboard.add(row);
         }
