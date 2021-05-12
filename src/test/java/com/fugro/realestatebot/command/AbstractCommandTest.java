@@ -5,8 +5,10 @@ import com.fugro.realestatebot.client.EasyBaseClient;
 import com.fugro.realestatebot.service.SendMessageService;
 import com.fugro.realestatebot.service.TelegramUserService;
 import com.fugro.realestatebot.service.impl.SendMessageServiceImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -36,14 +38,14 @@ public abstract class AbstractCommandTest {
         Update update = new Update();
         update.setMessage(message);
 
-        SendMessage sendMessage = createSendMessage(chatId);
+        SendMessage expectedReply = createSendMessage(chatId);
 
         // when
-        getCommand().execute(update);
+        BotApiMethod<?> actualResult = getCommand().execute(update);
 
         // then
-        Mockito.verify(realEstateBot).execute(sendMessage);
-
+        Assertions.assertEquals(expectedReply.getText(), ((SendMessage) actualResult).getText());
+        Assertions.assertEquals(expectedReply.getChatId(), ((SendMessage) actualResult).getChatId());
     }
 
     protected SendMessage createSendMessage(Long chaId) {
